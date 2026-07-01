@@ -69,6 +69,11 @@ COLORS = [
     ("紫", [180,  80, 220]),
 ]
 
+# 金手指
+SUPER_PREFIX = "[卍煞氣a傳說卍]"
+SUPER_REGEN = 5             # 每次補血量
+SUPER_REGEN_INTERVAL = 0.15 # 補血間隔秒（≈33 HP/s）
+
 # Buff 顯示顏色與圖示字元（畫在道具上）
 BUFF_COLORS = {
     "hp":     (100, 220, 100),

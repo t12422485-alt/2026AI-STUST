@@ -5,6 +5,7 @@ import threading
 import json
 import time
 import math
+import colorsys
 
 from constants import (
     WORLD_W, WORLD_H, SCREEN_W, SCREEN_H, MINIMAP_SIZE,
@@ -13,7 +14,15 @@ from constants import (
     SPEED_BUFF_MULT, ORBIT_BULLET_RADIUS,
     CHAT_LOG_SHOW, CHAT_PANEL_W, CHAT_PANEL_H,
     BUFF_COLORS, BUFF_LABELS, BUFF_ZH,
+    SUPER_PREFIX,
 )
+
+
+def rainbow(t, offset=0.0):
+    """(t 秒 + offset) → 一個 (r,g,b) 彩虹顏色，用來閃爍"""
+    h = (t * 1.2 + offset) % 1.0
+    r, g, b = colorsys.hsv_to_rgb(h, 1.0, 1.0)
+    return int(r * 255), int(g * 255), int(b * 255)
 
 
 def run_game(sock, config):
@@ -249,7 +258,14 @@ def run_game(sock, config):
                     pygame.draw.circle(screen, (120, 120, 120), (sx, sy), psize, 2)
                     xx = font.render("X_X", True, (120, 120, 120))
                     screen.blit(xx, (sx - xx.get_width() // 2, sy - xx.get_height() // 2))
-                id_s = font.render(p["id"], True, (0, 0, 0))
+                # 名字：金手指開啟時彩虹閃爍 + 前綴
+                if p.get("super"):
+                    name_text = SUPER_PREFIX + p["id"]
+                    id_col = rainbow(now, offset=hash(p["id"]) % 100 / 100.0)
+                else:
+                    name_text = p["id"]
+                    id_col = (0, 0, 0)
+                id_s = font.render(name_text, True, id_col)
                 screen.blit(id_s, (sx - id_s.get_width() // 2, sy + psize + 6))
                 if p.get("chat") and now - p.get("chat_time", 0) < CHAT_DURATION:
                     draw_bubble(screen, sx, sy, p["chat"], psize)
@@ -265,13 +281,19 @@ def run_game(sock, config):
             # 子彈
             for b in bullets_snap:
                 sx = int(b["x"] - cam_x); sy = int(b["y"] - cam_y)
-                if -50 < sx < SCREEN_W + 50 and -50 < sy < SCREEN_H + 50:
-                    if b.get("homing"):
-                        pygame.draw.circle(screen, (240, 220, 60), (sx, sy), BULLET_RADIUS + 2)
-                        pygame.draw.circle(screen, (0, 0, 0), (sx, sy), BULLET_RADIUS + 2, 1)
-                    else:
-                        pygame.draw.circle(screen, (255, 80, 20), (sx, sy), BULLET_RADIUS)
-                        pygame.draw.circle(screen, (0, 0, 0), (sx, sy), BULLET_RADIUS, 1)
+                if not (-50 < sx < SCREEN_W + 50 and -50 < sy < SCREEN_H + 50):
+                    continue
+                if b.get("rainbow"):
+                    # 彩虹子彈：外圈彩虹 + 白心
+                    r_col = rainbow(now, offset=b["x"] * 0.01 + b["y"] * 0.01)
+                    pygame.draw.circle(screen, r_col, (sx, sy), BULLET_RADIUS + 2)
+                    pygame.draw.circle(screen, (255, 255, 255), (sx, sy), BULLET_RADIUS - 1)
+                elif b.get("homing"):
+                    pygame.draw.circle(screen, (240, 220, 60), (sx, sy), BULLET_RADIUS + 2)
+                    pygame.draw.circle(screen, (0, 0, 0), (sx, sy), BULLET_RADIUS + 2, 1)
+                else:
+                    pygame.draw.circle(screen, (255, 80, 20), (sx, sy), BULLET_RADIUS)
+                    pygame.draw.circle(screen, (0, 0, 0), (sx, sy), BULLET_RADIUS, 1)
 
             # 準心（大十字 + 中央小點）
             if alive:
