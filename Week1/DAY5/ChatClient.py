@@ -23,7 +23,7 @@ def receive_messages(client_socket):
 def start_client():
     client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     try:
-        client.connect(('127.0.0.1', 12345))
+        client.connect(('192.168.1.101', 12345))
         print("[成功] 已連線至聊天室伺服器！")
     except Exception as e:
         print(f"[失敗] 無法連線至伺服器: {e}")

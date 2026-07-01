@@ -61,7 +61,7 @@ def remove_client(client_socket):
 def start_server():
     server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     server.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
-    server.bind(('127.0.0.1', 12345))
+    server.bind(('0.0.0.0', 12345))
     server.listen()
     print("[啟動] 聊天室 Server 正在執行，等待連線...")
 

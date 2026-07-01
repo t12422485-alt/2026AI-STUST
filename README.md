@@ -94,6 +94,14 @@ project/
 | `09_小作品_斜向拋射.py` | 把 DAY2 的斜向拋射函式套上 GUI，輸入 v0、角度即可算出 T / H / R |
 | `10_小作品_湖西鄉人口GUI.py` | 整合 `filedialog` 檔案選擇器 + `FigureCanvasTkAgg` 嵌入 matplotlib + `ttk.Combobox` 下拉選單切換 6 種圖（差方圖 / 總人口 / 出生 / 死亡 / 遷入遷出 / 男女）|
 
+### DAY 5 — Socket 網路程式
+
+| 檔案 / 資料夾 | 內容 |
+|---|---|
+| `Server.py` / `Client.py` | 最小 TCP echo server / client |
+| `ChatServer.py` / `ChatClient.py` | 多人聊天室（threading + broadcast）|
+| `pygame_multiplayer/` | pygame 多人 2D 遊戲：Server + Client，WASD 移動、小地圖、聊天泡泡。詳見資料夾內 `README.md` |
+
 ---
 
 ## hello.md
@@ -105,8 +113,8 @@ Markdown 語法初體驗，練習標題與項目符號。
 ## 學習脈絡
 
 ```
-DAY2 語法基礎  →  DAY3 迴圈 + 視覺化  →  DAY4 真實資料 + pandas
-   (變數/條件)        (列表/檔案/plt)         (Excel/作業)
+DAY2 語法基礎  →  DAY3 迴圈 + 視覺化  →  DAY4 真實資料 + pandas + tkinter GUI  →  DAY5 網路 socket + pygame 多人遊戲
+   (變數/條件)        (列表/檔案/plt)         (Excel/作業/GUI)                        (TCP/threading/pygame)
 ```
 
 每個檔名都用中文命名，方便對照當天課程主題快速回頭翻閱。
