@@ -90,7 +90,7 @@ def main():
     app.router.add_post("/api/messages", api_新增訊息)
 
     print("Server 開啟於 http://127.0.0.1:8000/  (Ctrl+C 停止)")
-    web.run_app(app, host="0.0.0.0", port=8000)
+    web.run_app(app, host="0.0.0.0", port=8089)
 
 
 if __name__ == "__main__":
