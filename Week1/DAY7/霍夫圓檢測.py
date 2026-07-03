@@ -28,7 +28,7 @@ while True:
     
     # 影像預處理：轉灰階 + 高斯模糊（霍夫圓對雜訊很敏感，模糊非常關鍵）
     gray_img = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
-    blurred = cv2.GaussianBlur(gray_img, (9, 9), 2)
+    blurred = cv2.GaussianBlur(gray_img, (13, 13), 2)
     
     # A. 進行 Canny 與輪廓檢測 (用來篩選面積)
     edges = cv2.Canny(blurred, 50, 150)
