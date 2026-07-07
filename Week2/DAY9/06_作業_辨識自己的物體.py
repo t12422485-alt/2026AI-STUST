@@ -21,14 +21,36 @@
 # 需要：pip install tensorflow opencv-python numpy
 
 import os
+os.environ["TF_USE_LEGACY_KERAS"] = "1"   # 必須在 import tensorflow 之前
+
 import time
 import cv2
 import numpy as np
 import tensorflow as tf
+from PIL import Image, ImageDraw, ImageFont
 
 BASE = os.path.dirname(os.path.abspath(__file__))
 MODEL_PATH  = os.path.join(BASE, "keras_model.h5")
 LABELS_PATH = os.path.join(BASE, "labels.txt")
+
+# ====== 中文字型（OpenCV putText 不支援中文，改用 PIL）======
+FONT_CANDIDATES = [
+    "C:/Windows/Fonts/msjh.ttc",   # Microsoft JhengHei
+    "C:/Windows/Fonts/msyh.ttc",   # Microsoft YaHei
+    "C:/Windows/Fonts/simhei.ttf",
+]
+FONT_PATH = next((p for p in FONT_CANDIDATES if os.path.exists(p)), None)
+if FONT_PATH is None:
+    raise RuntimeError("找不到中文字型，請安裝微軟正黑體或改字型路徑")
+
+def 畫中文(img_bgr, text, xy, size, color_bgr):
+    """在 OpenCV BGR 影像上畫中文，color 用 BGR"""
+    img_pil = Image.fromarray(cv2.cvtColor(img_bgr, cv2.COLOR_BGR2RGB))
+    draw = ImageDraw.Draw(img_pil)
+    font = ImageFont.truetype(FONT_PATH, size)
+    # PIL 用 RGB，把 BGR 換過來
+    draw.text(xy, text, font=font, fill=(color_bgr[2], color_bgr[1], color_bgr[0]))
+    return cv2.cvtColor(np.array(img_pil), cv2.COLOR_RGB2BGR)
 
 # ====== 讀模型 + labels ======
 with open(LABELS_PATH, "r", encoding="utf-8") as f:
@@ -81,11 +103,11 @@ while True:
     #     import winsound
     #     winsound.Beep(1000, 100)
 
-    # ====== 畫面顯示 ======
-    cv2.putText(frame, f"{目前類別} ({信心*100:.1f}%)",
-                (10, 40), cv2.FONT_HERSHEY_SIMPLEX, 1.0, (0, 255, 0), 2)
-    cv2.putText(frame, f"持續: {持續秒數:.1f}s",
-                (10, 75), cv2.FONT_HERSHEY_SIMPLEX, 0.7, (255, 255, 0), 2)
+    # ====== 畫面顯示（用 PIL 畫中文）======
+    frame = 畫中文(frame, f"{目前類別} ({信心*100:.1f}%)",
+                   (10, 10), 32, (0, 255, 0))
+    frame = 畫中文(frame, f"持續: {持續秒數:.1f}s",
+                   (10, 55), 24, (0, 255, 255))
 
     cv2.imshow("我的分類器應用", frame)
 
