@@ -43,6 +43,7 @@ DAY7 用 OpenCV 教電腦「看形狀」— 我們自己設計條件（面積、
 | `05_遷移學習_MobileNet.py` | 用 ImageNet 預訓練 MobileNetV2 分類鏡頭畫面 | 跑 |
 | `06_作業_辨識自己的物體.py` | 空殼作業：接你自己的 TM 模型做應用 | 動手 |
 | `07_手寫辨識_tkinter.py` | tkinter 畫布用滑鼠寫數字，訓好的 MNIST CNN 即時預測 + 機率長條 | 跑 |
+| `08_物件偵測_mediapipe.py` | MediaPipe EfficientDet-Lite0 webcam 物件偵測，COCO 80 類會畫框 + 中文標籤 | 跑 |
 
 ## 環境準備
 

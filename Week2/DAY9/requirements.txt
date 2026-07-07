@@ -49,6 +49,7 @@
 
 tensorflow
 tf-keras          # Keras 2 相容層，讀 TM 舊 h5 必備
+mediapipe         # 08 物件偵測用
 opencv-python
 pillow
 numpy
