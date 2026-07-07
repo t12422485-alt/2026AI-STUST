@@ -19,7 +19,7 @@ except ImportError:
 class 影像工具:
     def __init__(self):
         # ====== webcam ======
-        self.cap = cv2.VideoCapture(0)
+        self.cap = cv2.VideoCapture(1)
         if not self.cap.isOpened():
             raise RuntimeError("無法開啟 webcam")
 

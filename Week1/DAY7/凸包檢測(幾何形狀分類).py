@@ -27,7 +27,7 @@ while True:
     blurred = cv2.GaussianBlur(gray_img, (7, 7), 1.5)
     
     # A. 邊緣與輪廓檢測
-    edges = cv2.Canny(blurred, 50, 150)
+    edges = cv2.Canny(blurred, 30, 150)
     contours, hierarchy = cv2.findContours(edges, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
     
     # B. 霍夫圓檢測 (預備給圓形比對使用)
@@ -98,6 +98,7 @@ while True:
                             cv2.FONT_HERSHEY_SIMPLEX, 0.5, color, 2)
 
     # 3. 顯示結果
+    cv2.imshow('debug', edges)
     cv2.imshow('Webcam Shape Detection', img_copy)
 
     if cv2.waitKey(1) & 0xFF == ord('q'):
