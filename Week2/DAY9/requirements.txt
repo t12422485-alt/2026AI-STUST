@@ -1,0 +1,19 @@
+# DAY9 環境需求
+#
+# 重要：Teachable Machine 匯出的 .h5 模型只能被 Keras 2 讀
+# Keras 3 (TF 2.16+ 自帶) 會遇到 DepthwiseConv2D 和 Sequential 相容性錯誤
+# → 明確鎖 TF 2.15 + Keras 2.15
+#
+# 安裝方式（建議在 conda env 內執行）：
+#   pip install -r requirements.txt
+
+tensorflow==2.15.*
+keras==2.15.*
+
+# numpy 要 <2，跟 TF 2.15 相容；opencv 5.x 需要 numpy>=2，衝突 → 用 4.x
+numpy<2
+opencv-python<5
+
+# 影像處理 + 學習曲線
+pillow
+matplotlib

@@ -30,3 +30,9 @@ Thumbs.db
 ~$*
 # 圖片檔案
 *.jpg
+
+# 訓練好的模型（每個人自己去 Teachable Machine 訓練，避免互相蓋掉）
+*.h5
+*.keras
+*.tflite
+Week2/DAY9/labels.txt
