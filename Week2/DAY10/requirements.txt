@@ -1,0 +1,29 @@
+# DAY10 環境需求
+#
+# ================================================================
+# ⚠ Python 版本 3.9 ~ 3.12 (跟 DAY9 相同)
+# ================================================================
+#
+# 安裝：
+#   conda activate STUSTPython
+#   pip install -r requirements.txt
+#
+# 第一次跑 02 會下載 yolo11n.pt (~5.5MB)
+# 第一次跑 05 會下載 COCO 預訓練權重當起點
+#
+# ================================================================
+# GPU 版 PyTorch（有 NVIDIA 顯卡的話）
+# ================================================================
+# 預設安裝的是 CPU 版 torch，訓練速度慢 5~20 倍
+# 有 GPU 想加速的話，先解除安裝 CPU 版再裝 CUDA 版：
+#   pip uninstall torch torchvision
+#   pip install torch torchvision --index-url https://download.pytorch.org/whl/cu121
+#   （cu121 對應 CUDA 12.1；查你的 CUDA 版本用 nvidia-smi）
+
+ultralytics       # YOLO11n
+roboflow          # 下載 Roboflow dataset
+opencv-python
+pillow
+numpy
+pandas            # 06 讀 results.csv
+matplotlib        # 06 畫學習曲線

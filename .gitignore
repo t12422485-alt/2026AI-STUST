@@ -36,3 +36,9 @@ Thumbs.db
 *.keras
 *.tflite
 Week2/DAY9/labels.txt
+
+# YOLO 訓練檔案（模型權重、下載的 dataset、runs 結果）
+*.pt
+Week2/DAY10/datasets/*
+!Week2/DAY10/datasets/.gitkeep
+Week2/DAY10/runs/
