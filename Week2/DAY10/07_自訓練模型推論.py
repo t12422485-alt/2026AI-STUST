@@ -15,14 +15,21 @@ from PIL import Image, ImageDraw, ImageFont
 BASE = Path(__file__).parent
 
 # ====== 找最新一個 best.pt ======
-runs_dir = BASE / "runs"
-weights_candidates = sorted(runs_dir.rglob("best.pt"), key=lambda p: p.stat().st_mtime, reverse=True)
+# 05 現在會用絕對路徑存到 DAY10/runs/；為了相容以前跑到 project root 的版本，也掃那邊
+search_dirs = [BASE / "runs", BASE.parent.parent / "runs"]
+weights_candidates = []
+for d in search_dirs:
+    if d.exists():
+        weights_candidates.extend(d.rglob("best.pt"))
+weights_candidates = sorted(weights_candidates, key=lambda p: p.stat().st_mtime, reverse=True)
 if not weights_candidates:
     raise FileNotFoundError(
-        f"找不到 best.pt。先跑 05_訓練自己的YOLO.py 完成訓練"
+        "找不到 best.pt。先跑 05_訓練自己的YOLO.py 完成訓練"
     )
 MODEL_PATH = weights_candidates[0]
-print(f"載入模型：{MODEL_PATH}")
+print(f"載入最新模型：{MODEL_PATH}")
+if len(weights_candidates) > 1:
+    print(f"（共找到 {len(weights_candidates)} 個 best.pt，用最新的）")
 
 model = YOLO(str(MODEL_PATH))
 print(f"類別名稱：{model.names}")
