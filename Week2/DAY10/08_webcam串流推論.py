@@ -32,7 +32,9 @@ weights_candidates = sorted(weights_candidates, key=lambda p: p.stat().st_mtime,
 if not weights_candidates:
     raise FileNotFoundError("找不到 best.pt，先跑 05_訓練自己的YOLO.py")
 MODEL_PATH = weights_candidates[0]
-print(f"載入模型：{MODEL_PATH}")
+print(f"載入最新模型：{MODEL_PATH}")
+if len(weights_candidates) > 1:
+    print(f"（共找到 {len(weights_candidates)} 個 best.pt，用最新的）")
 
 model = YOLO(str(MODEL_PATH))
 print(f"類別：{model.names}")

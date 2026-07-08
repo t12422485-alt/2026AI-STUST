@@ -15,8 +15,7 @@ from PIL import Image, ImageDraw, ImageFont
 BASE = Path(__file__).parent
 
 # ====== 找最新一個 best.pt ======
-# Ultralytics 有時把 runs 放在 <DAY10>/runs/，有時放在 project root（跟 python 執行目錄有關）
-# 兩個位置都掃，取最新的一份
+# 05 現在會用絕對路徑存到 DAY10/runs/；為了相容以前跑到 project root 的版本，也掃那邊
 search_dirs = [BASE / "runs", BASE.parent.parent / "runs"]
 weights_candidates = []
 for d in search_dirs:
@@ -28,7 +27,9 @@ if not weights_candidates:
         "找不到 best.pt。先跑 05_訓練自己的YOLO.py 完成訓練"
     )
 MODEL_PATH = weights_candidates[0]
-print(f"載入模型：{MODEL_PATH}")
+print(f"載入最新模型：{MODEL_PATH}")
+if len(weights_candidates) > 1:
+    print(f"（共找到 {len(weights_candidates)} 個 best.pt，用最新的）")
 
 model = YOLO(str(MODEL_PATH))
 print(f"類別名稱：{model.names}")

@@ -18,12 +18,21 @@ plt.rcParams["font.sans-serif"] = ["Microsoft JhengHei"]
 plt.rcParams["axes.unicode_minus"] = False
 
 BASE = Path(__file__).parent
-# 改這裡：指向你的訓練結果資料夾（跑 05 時終端會 print 出來）
-RUN_DIR = BASE / "runs" / "train"
 
-results_csv = RUN_DIR / "results.csv"
-if not results_csv.exists():
-    raise FileNotFoundError(f"找不到 {results_csv}，先跑 05_訓練自己的YOLO.py")
+# 自動找最新的 results.csv（兩個位置都掃）
+search_dirs = [BASE / "runs", BASE.parent.parent / "runs"]
+candidates = []
+for d in search_dirs:
+    if d.exists():
+        candidates.extend(d.rglob("results.csv"))
+candidates = sorted(candidates, key=lambda p: p.stat().st_mtime, reverse=True)
+if not candidates:
+    raise FileNotFoundError(
+        "找不到 results.csv，先跑 05_訓練自己的YOLO.py"
+    )
+results_csv = candidates[0]
+RUN_DIR = results_csv.parent
+print(f"讀取：{results_csv}")
 
 df = pd.read_csv(results_csv)
 # Ultralytics 的欄位名前面通常有空白，清掉
